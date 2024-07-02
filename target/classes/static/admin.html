@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil do Administrador</title>
+    <style>
+        body {
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .form-group button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .form-group button:hover {
+            background-color: #45a049;
+        }
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Perfil do Administrador</h2>
+
+        <h3>Contas do Banco</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Conta ID</th>
+                    <th>Cliente</th>
+                    <th>Saldo</th>
+                </tr>
+            </thead>
+            <tbody id="tabelaContas">
+            </tbody>
+        </table>
+
+        <h3>Transferências Realizadas</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Transferência ID</th>
+                    <th>Conta Origem</th>
+                    <th>Conta Destino</th>
+                    <th>Valor</th>
+                    <th>Data e Hora</th>
+                </tr>
+            </thead>
+            <tbody id="tabelaTransferencias">
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var contas = [
+                { id: 1, cliente: 'Fulano de Tal', saldo: 'R$ 1000,00' },
+                { id: 2, cliente: 'Ciclano da Silva', saldo: 'R$ 500,00' }
+            ];
+
+            var transferencias = [
+                { id: 1, contaOrigem: 'Conta A', contaDestino: 'Conta B', valor: 'R$ 200,00', dataHora: '2024-07-03T10:00:00' },
+                { id: 2, contaOrigem: 'Conta C', contaDestino: 'Conta D', valor: 'R$ 300,00', dataHora: '2024-07-03T11:00:00' }
+            ];
+
+            var tabelaContas = document.getElementById('tabelaContas');
+            contas.forEach(function(conta) {
+                var row = tabelaContas.insertRow();
+                row.insertCell(0).textContent = conta.id;
+                row.insertCell(1).textContent = conta.cliente;
+                row.insertCell(2).textContent = conta.saldo;
+            });
+
+            var tabelaTransferencias = document.getElementById('tabelaTransferencias');
+            transferencias.forEach(function(transferencia) {
+                var row = tabelaTransferencias.insertRow();
+                row.insertCell(0).textContent = transferencia.id;
+                row.insertCell(1).textContent = transferencia.contaOrigem;
+                row.insertCell(2).textContent = transferencia.contaDestino;
+                row.insertCell(3).textContent = transferencia.valor;
+                row.insertCell(4).textContent = new Date(transferencia.dataHora).toLocaleString('pt-BR');
+            });
+        });
+    </script>
+</body>
+</html>

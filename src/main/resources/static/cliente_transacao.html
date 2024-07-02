@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Realizar Transferência Bancária</title>
+    <style>
+        body {
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 400px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .form-group button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .form-group button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Realizar Transferência Bancária</h2>
+        
+        <div class="form-group">
+            <label for="contaOrigem">Conta de Origem:</label>
+            <input type="text" id="contaOrigem" name="contaOrigem" required>
+        </div>
+        <div class="form-group">
+            <label for="contaDestino">Conta de Destino:</label>
+            <input type="text" id="contaDestino" name="contaDestino" required>
+        </div>
+        <div class="form-group">
+            <label for="valor">Valor:</label>
+            <input type="number" id="valor" name="valor" required>
+        </div>
+        <div class="form-group">
+            <button onclick="realizarTransferencia()">Transferir</button>
+        </div>
+    </div>
+
+    <script>
+        function realizarTransferencia() {
+            var contaOrigem = document.getElementById('contaOrigem').value;
+            var contaDestino = document.getElementById('contaDestino').value;
+            var valor = document.getElementById('valor').value;
+
+            var transferencia = {
+                contaOrigemId: contaOrigem,
+                contaDestinoId: contaDestino,
+                valor: parseFloat(valor)
+            };
+
+            fetch('http://localhost:8085/cb/transferencia', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(transferencia)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro ao realizar transferência');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Transferência realizada com sucesso:', data);
+                alert('Transferência realizada com sucesso!');
+                document.getElementById('contaOrigem').value = '';
+                document.getElementById('contaDestino').value = '';
+                document.getElementById('valor').value = '';
+            })
+            .catch(error => {
+                console.error('Erro ao realizar transferência:', error.message);
+                alert('Erro ao realizar transferência. Verifique os dados e tente novamente.');
+            });
+        }
+    </script>
+</body>
+</html>

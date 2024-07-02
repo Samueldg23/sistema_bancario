@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operações Bancárias</title>
+    <style>
+        body {
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 400px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .form-group button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .form-group button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Operações Bancárias</h2>
+
+        <!-- Depósito em Conta -->
+        <div class="form-group">
+            <h3>Depositar em Conta</h3>
+            <label for="contaDeposito">Conta:</label>
+            <input type="text" id="contaDeposito" name="contaDeposito" required>
+            <label for="valorDeposito">Valor:</label>
+            <input type="number" id="valorDeposito" name="valorDeposito" required>
+            <button onclick="realizarDeposito()">Depositar</button>
+        </div>
+
+        <!-- Débito em Conta -->
+        <div class="form-group">
+            <h3>Debitar de Conta</h3>
+            <label for="contaDebito">Conta:</label>
+            <input type="text" id="contaDebito" name="contaDebito" required>
+            <label for="valorDebito">Valor:</label>
+            <input type="number" id="valorDebito" name="valorDebito" required>
+            <button onclick="realizarDebito()">Debitar</button>
+        </div>
+
+    </div>
+
+    <script>
+        function realizarDeposito() {
+            var contaDeposito = document.getElementById('contaDeposito').value;
+            var valorDeposito = document.getElementById('valorDeposito').value;
+
+            var deposito = {
+                contaId: contaDeposito,
+                valor: parseFloat(valorDeposito)
+            };
+
+            fetch('http://localhost:8085/cb/contas/' + contaDeposito + '/depositar?valor=' + valorDeposito, {
+                method: 'POST'
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro ao realizar depósito');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Depósito realizado com sucesso:', data);
+                alert('Depósito realizado com sucesso!');
+                document.getElementById('contaDeposito').value = '';
+                document.getElementById('valorDeposito').value = '';
+            })
+            .catch(error => {
+                console.error('Erro ao realizar depósito:', error.message);
+                alert('Erro ao realizar depósito. Verifique os dados e tente novamente.');
+            });
+        }
+
+        function realizarDebito() {
+            var contaDebito = document.getElementById('contaDebito').value;
+            var valorDebito = document.getElementById('valorDebito').value;
+
+            var debito = {
+                contaId: contaDebito,
+                valor: parseFloat(valorDebito)
+            };
+
+            fetch('http://localhost:8085/cb/contas/' + contaDebito + '/debitar?valor=' + valorDebito, {
+                method: 'POST'
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro ao realizar débito');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Débito realizado com sucesso:', data);
+                alert('Débito realizado com sucesso!');
+                document.getElementById('contaDebito').value = '';
+                document.getElementById('valorDebito').value = '';
+            })
+            .catch(error => {
+                console.error('Erro ao realizar débito:', error.message);
+                alert('Erro ao realizar débito. Verifique os dados e tente novamente.');
+            });
+        }
+    </script>
+</body>
+</html>
